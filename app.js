@@ -1,3 +1,41 @@
+async function loadIssues() {
+    console.log('🔍 开始加载 Issues...');
+    console.log('📝 配置信息:', CONFIG);
+    
+    const cachedData = this.getCachedData();
+    if (cachedData) {
+        console.log('✅ 使用缓存数据');
+        this.issues = cachedData;
+        this.renderPosts();
+        return;
+    }
+
+    try {
+        this.showLoading(true);
+        
+        const apiUrl = `https://api.github.com/repos/${CONFIG.GITHUB_USER}/${CONFIG.REPO_NAME}/issues?per_page=${CONFIG.PER_PAGE}&state=open`;
+        console.log('🌐 请求URL:', apiUrl);
+        
+        const response = await fetch(apiUrl);
+        console.log('📡 响应状态:', response.status, response.statusText);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        this.issues = await response.json();
+        console.log('📚 获取到文章数量:', this.issues.length);
+        
+        this.cacheData(this.issues);
+        this.renderPosts();
+        
+    } catch (error) {
+        console.error('❌ 加载失败:', error);
+        this.showError('加载文章失败: ' + error.message);
+    } finally {
+        this.showLoading(false);
+    }
+}
 // 配置信息
 const CONFIG = {
     GITHUB_USER: 'Yexiaowei11',  // 替换为你的用户名
