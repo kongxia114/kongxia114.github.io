@@ -1,6 +1,8 @@
-# Yexiaowei11.github.io
+# yexiaowei11.github.io
 
-
-Yexiaowei11.github.io
-前往页面
-目前还在施工中
+##网站状态
+-
+-正在研究与制作中
+-
+## 辅助制作
+-deepseek
