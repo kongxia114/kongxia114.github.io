@@ -2,20 +2,25 @@ name: Refresh Blog Cache
 
 on:
   schedule:
-    - cron: '0 */4 * * *' # 每4小时一次
+    - cron: '0 */6 * * *' # 每6小时一次
   workflow_dispatch:
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
     steps:
-      - name: Clear cache and trigger rebuild
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Create refresh file
         run: |
-          echo "🕒 博客缓存刷新时间: $(date)" > last-update.txt
-      - name: Commit and push if changed
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add last-update.txt
-          git diff --staged --quiet || git commit -m "🔄 Auto-refresh blog cache"
-          git push
+          date +%s > .last-refresh
+          
+      - name: Commit and push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-refresh blog cache"
+          file_pattern: '.last-refresh'
