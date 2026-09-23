@@ -16,7 +16,7 @@ Redstone Launcher 是一个开源的 Minecraft 启动器，支持：
 
 ## 截图
 
-![主界面](docs/assets/screenshot-main.png)
+![主界面](/Redstone-Launcher/assets/image.png)
 
 ## 下载
 
