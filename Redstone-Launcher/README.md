@@ -1,4 +1,4 @@
-# Redstone Launcher
+# Mosslight Launcher
 
 一个用 Python + PyQt6 写的 Minecraft 启动器。
 
