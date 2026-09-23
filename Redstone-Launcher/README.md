@@ -43,4 +43,5 @@ Redstone Launcher 是一个开源的 Minecraft 启动器，支持：
 ```bash
 pip install -r requirements.txt
 python main.py
-或下载exe程序直接运行
+
+- 下载exe程序直接运行
