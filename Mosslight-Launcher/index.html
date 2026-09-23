@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mossbound-Launcher - Minecraft 启动器</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, "Microsoft YaHei", sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e9e9ec;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+        .container {
+            max-width: 720px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            color: #5ec269;
+            margin-bottom: 16px;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            color: #a0a1a7;
+            margin-bottom: 40px;
+        }
+        .buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        a.button {
+            display: inline-block;
+            padding: 14px 32px;
+            background: #3f8f4b;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        a.button:hover {
+            background: #4da25a;
+            transform: translateY(-2px);
+        }
+        a.button.secondary {
+            background: transparent;
+            border: 2px solid #5ec269;
+            color: #5ec269;
+        }
+        a.button.secondary:hover {
+            background: rgba(94, 194, 105, 0.1);
+        }
+        .features {
+            margin-top: 60px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+        }
+        .features h2 {
+            color: #5ec269;
+            margin-bottom: 20px;
+        }
+        .features ul {
+            list-style: none;
+        }
+        .features li {
+            padding: 8px 0;
+            color: #d0d0d0;
+        }
+        .features li::before {
+            content: "✅ ";
+            margin-right: 8px;
+        }
+        footer {
+            margin-top: 60px;
+            color: #6e7076;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⛏ Redstone Launcher</h1>
+        <p class="subtitle">一个用 Python + PyQt6 写的 Minecraft 启动器</p>
+
+        <div class="buttons">
+            <a class="button" href="https://github.com/kongxia114/Mossbound-Launcher/releases">
+                ⬇ 下载最新版
+            </a>
+            <a class="button secondary" href="https://github.com/kongxia114/Mossbound-Launcher">
+                查看源码
+            </a>
+        </div>
+
+        <div class="features">
+            <h2>特性</h2>
+            <ul>
+                <li>扫描本地版本</li>
+                <li>账户管理（离线 / 正版 / 第三方）</li>
+                <li>多语言（中 / 英 / 繁 / 日 / 俄）</li>
+                <li>深色 / 浅色主题</li>
+                <li>下载原版游戏</li>
+                <li>安装 Forge</li>
+                <li>安装 Fabric + Fabric API</li>
+            </ul>
+        </div>
+
+        <footer>
+            © 2026 Redstone Studio · GPL-3.0 License
+        </footer>
+    </div>
+</body>
+</html>
