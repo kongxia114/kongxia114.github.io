@@ -1,4 +1,4 @@
-# Mosslight Launcher
+# Mossbound Launcher
 
 一个用 Python + PyQt6 写的 Minecraft 启动器。
 
@@ -8,7 +8,7 @@
 
 ## 简介
 
-Redstone Launcher 是一个开源的 Minecraft 启动器，支持：
+Mossbound Launcher 是一个开源的 Minecraft 启动器，支持：
 - 多版本管理
 - Forge / Fabric 安装
 - 账户管理
@@ -16,11 +16,11 @@ Redstone Launcher 是一个开源的 Minecraft 启动器，支持：
 
 ## 截图
 
-![主界面](/Redstone-Launcher/assets/image.png)
+![主界面](/Mossbound-Launcher/assets/image.png)
 
 ## 下载
 
-从 [Releases](https://github.com/kongxia114/Redstone-Launcher/releases) 下载最新版。
+从 [Releases](https://github.com/kongxia114/Mossbound-Launcher/releases) 下载最新版。
 
 ## 特性
 
