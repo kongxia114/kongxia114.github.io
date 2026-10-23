@@ -21,7 +21,7 @@
   <link rel="preload" as="image" href="assets/img/shot-download.webp" fetchpriority="high">
   <script>document.documentElement.classList.add('js');</script>
 
-  <script type="application/ld+json">
+  <script type="application/ld+json" id="app-schema">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -29,7 +29,7 @@
     "description": "用 C# / WPF 重写的 Minecraft 启动器，装原版、加载器、整合包与 Modrinth 资源，管理账户与外观。",
     "applicationCategory": "GameApplication",
     "operatingSystem": "Windows 10 1809+, Windows 11",
-    "softwareVersion": "2.11.8",
+    "softwareVersion": "2.12.1",
     "codeRepository": "https://github.com/kongxia114/Mosslight-Launcher-2",
     "downloadUrl": "https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest",
     "license": "https://www.gnu.org/licenses/gpl-3.0.html",
@@ -87,12 +87,12 @@
             <path d="M9 18c-4.51 2-5-2-7-2"/>
           </svg>
         </a>
-        <a class="btn btn-primary btn-small header-download" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" aria-label="下载 Mosslight Launcher 2 v2.11.8">
+        <a class="btn btn-primary btn-small header-download" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" aria-label="下载 Mosslight Launcher 2 v2.12.1" data-download-label>
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
           </svg>
           <span>下载</span>
-          <span class="btn-version">2.11.8</span>
+          <span class="btn-version js-version" data-version-format="short">2.12.1</span>
         </a>
         <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="打开菜单" data-menu-toggle>
           <svg class="icon icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false">
@@ -122,7 +122,7 @@
         下载 Windows 版
       </a>
       <div class="mobile-nav-meta">
-        <span>v2.11.8</span>
+        <span class="js-version" data-version-format="full">v2.12.1</span>
         <span>Windows x64</span>
         <a href="https://github.com/kongxia114/Mosslight-Launcher-2" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
@@ -134,14 +134,14 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="hero-badges reveal" style="--delay: 40ms">
-            <span class="release-pill"><span class="live-dot" aria-hidden="true"></span>v2.11.8 · 已发布</span>
+            <span class="release-pill"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.1</span> · 已发布</span>
             <span class="tech-pill">C# / WPF</span>
             <span class="tech-pill">GPL-3.0</span>
           </div>
 
           <h1 class="hero-title reveal" id="hero-title" style="--delay: 100ms">
             <span class="line">一个 1.4 MB 的启动器，</span>
-            <span class="line text-gradient">装下整个 <br class="mobile-break"><span class="nowrap">Minecraft。</span></span>
+            <span class="line text-gradient">装下整个 <br class="mobile-break"><span class="nowrap">Minecraft</span></span>
           </h1>
 
           <p class="hero-lede reveal" style="--delay: 160ms">
@@ -208,10 +208,10 @@
               </svg>
             </span>
             <span class="float-copy">
-              <strong>1,302 / 1,302</strong>
+              <strong><span class="count-num" data-count="1302">0</span> / 1,302</strong>
               <span>自检全部通过</span>
             </span>
-            <span class="mini-bar"><i></i></span>
+            <span class="mini-bar" data-progress="true"><i></i></span>
           </div>
 
           <div class="float-card float-size" aria-hidden="true">
@@ -256,7 +256,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow reveal">01 / 亮点</p>
-            <h2 class="reveal" id="why-title" style="--delay: 60ms">轻、全、稳，<br><span class="text-gradient">三件事都做到位。</span></h2>
+            <h2 class="reveal" id="why-title" style="--delay: 60ms">轻、全、稳，<br><span class="text-gradient">三件事都做到位</span></h2>
           </div>
           <p class="section-note reveal" style="--delay: 120ms">不是把功能堆在一起。是把每天都要用的那几件事，放进一个窗口里，做扎实。</p>
         </div>
@@ -271,7 +271,7 @@
               </span>
               <span class="why-index">01 / LIGHT</span>
             </div>
-            <h3>小到可以随手更新。</h3>
+            <h3>小到可以随手更新</h3>
             <p>Release 里只有一个约 1.4 MB 的 win64.zip。解压出来就一个 Mosslight.exe，更新一次也只下这么多。</p>
             <div class="why-metric">
               <span class="metric">1.4 MB</span>
@@ -288,7 +288,7 @@
               </span>
               <span class="why-index">02 / COMPLETE</span>
             </div>
-            <h3>一个窗口，从下载到开游戏。</h3>
+            <h3>一个窗口，从下载到开游戏</h3>
             <p>原版、六种加载器、整合包、Modrinth 资源、账户、外观和自动更新，都在同一个窗口里。不用再装第二个软件。</p>
             <div class="why-metric">
               <span class="metric">6 种加载器</span>
@@ -305,7 +305,7 @@
               </span>
               <span class="why-index">03 / VERIFIED</span>
             </div>
-            <h3>1302 项自检，逐值比对。</h3>
+            <h3>1302 项自检，逐值比对</h3>
             <p>核心引擎拿 1.0.0 的 Python 实现当金标准，逐值比对；自检 1302 项全部通过。</p>
             <div class="why-metric">
               <span class="metric">1,302 / 1,302</span>
@@ -321,7 +321,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow reveal">02 / 功能</p>
-            <h2 class="reveal" id="features-title" style="--delay: 60ms">该有的，<br><span class="text-gradient">一个都不少。</span></h2>
+            <h2 class="reveal" id="features-title" style="--delay: 60ms">该有的，<br><span class="text-gradient">一个都不少</span></h2>
           </div>
           <p class="section-note reveal" style="--delay: 120ms">从启动游戏到换一个强调色。没有插件市场，也没有第二个设置面板。</p>
         </div>
@@ -431,7 +431,7 @@
         <div class="section-head">
           <div>
             <p class="eyebrow reveal">03 / 界面</p>
-            <h2 class="reveal" id="screens-title" style="--delay: 60ms">不是概念稿，<br><span class="text-gradient">是正在用的窗口。</span></h2>
+            <h2 class="reveal" id="screens-title" style="--delay: 60ms">不是概念稿，<br><span class="text-gradient">是正在用的窗口</span></h2>
           </div>
           <p class="section-note reveal" style="--delay: 120ms">从下载到启动，常用界面都在同一个窗口里。切换标签，看看实际截图。</p>
         </div>
@@ -505,7 +505,7 @@
         <div class="download-panel reveal">
           <div class="download-main">
             <p class="eyebrow">04 / 下载</p>
-            <h2 id="download-title">一个 zip，<br><span class="text-gradient">一个 exe。</span></h2>
+            <h2 id="download-title">一个 zip，<br><span class="text-gradient">一个 exe</span></h2>
             <p class="download-lede">下载、解压、双击。压缩包只有约 1.4 MB；需要更新时，也只替换这一个文件。</p>
 
             <div class="download-actions">
@@ -521,7 +521,7 @@
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
               </a>
             </div>
-            <p class="download-hint">将打开 GitHub Releases · 当前版本 v2.11.8</p>
+            <p class="download-hint">将打开 GitHub Releases · 当前版本 <span class="js-version" data-version-format="full">v2.12.1</span></p>
 
             <div class="download-meta">
               <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>Windows 10 1809+ / x64</span>
@@ -584,7 +584,7 @@
       <div class="container faq-grid">
         <div class="faq-intro">
           <p class="eyebrow reveal">05 / 常见问题</p>
-          <h2 class="reveal" id="faq-title" style="--delay: 60ms">下载前，<br><span class="text-gradient">先看这三条。</span></h2>
+          <h2 class="reveal" id="faq-title" style="--delay: 60ms">下载前，<br><span class="text-gradient">先看这三条</span></h2>
           <p class="reveal" style="--delay: 120ms">更多问题、日志说明和第三方登录配置，都整理在仓库的 Wiki 里。</p>
           <a class="text-link reveal" style="--delay: 160ms" href="https://github.com/kongxia114/Mosslight-Launcher-2/issues" target="_blank" rel="noopener noreferrer">
             去 GitHub Issues 提问
@@ -666,7 +666,7 @@
             </span>
           </a>
           <p>一个 1.4 MB 的 Minecraft 启动器。用 C# / WPF 写成，装得下原版、加载器、整合包和一整套日常。</p>
-          <p class="footer-version"><span class="live-dot" aria-hidden="true"></span>v2.11.8 · Windows x64 · GPL-3.0</p>
+          <p class="footer-version"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.1</span> · Windows x64 · GPL-3.0</p>
         </div>
 
         <div class="footer-links">
@@ -702,6 +702,7 @@
 
       <div class="footer-bottom">
         <p>© 2026 Mosslight Launcher 2 · <a href="https://github.com/kongxia114/Mosslight-Launcher-2/blob/HEAD/LICENSE" target="_blank" rel="noopener noreferrer">GPL-3.0</a></p>
+        <p class="footer-icp"><a href="https://icp.gov.moe/?keyword=20230254" target="_blank" rel="noopener noreferrer">萌ICP备20230254号</a></p>
         <p class="footer-legal">Minecraft 是 Mojang Studios 的商标。本项目与 Mojang 或 Microsoft 没有隶属关系，也未获其背书。</p>
         <a class="footer-top-link" href="#top">回到顶部
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
@@ -712,7 +713,7 @@
 
   <div class="mobile-cta" data-mobile-cta aria-hidden="true">
     <div class="mobile-cta-copy">
-      <span>v2.11.8 · 约 1.4 MB</span>
+      <span><span class="js-version" data-version-format="full">v2.12.1</span> · 约 1.4 MB</span>
       <strong>Win10 1809+ / x64</strong>
     </div>
     <a class="btn btn-primary btn-small" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" tabindex="-1">
