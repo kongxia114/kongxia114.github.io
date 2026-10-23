@@ -2,7 +2,7 @@
 
 单页静态站点，给 **Mosslight Launcher 2** 做介绍与下载引导。
 
-- 当前版本：**2.11.8**
+- 当前版本：**2.12.1**（页面会从 GitHub Releases 自动同步最新版）
 - 平台：Windows 10 1809+ / x64
 - 许可：**GPL-3.0**
 - 下载：一律指向 [GitHub Releases](https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest)，没有自建镜像
@@ -22,7 +22,7 @@ python -m http.server 8080
 ## 页面结构
 
 首屏（一句话 + 下载 + 主截图）→ 三条卖点 → 功能 8 项 → 截图（6 个标签页）
-→ 下载（含 .NET 提示）→ 常见问题 3 条 → 页脚（GPL-3.0 / GitHub / 更新日志）。
+→ 下载（含 .NET 提示）→ 常见问题 3 条 → 页脚（GPL-3.0 / GitHub / 更新日志 / 萌ICP备20230254号）。
 
 ## 视觉与交互
 
@@ -43,6 +43,8 @@ python -m http.server 8080
   `fill=-0.13 / hover=-0.07 / pressed=-0.20 / text=+0.16 / strong=+0.30`，
   再按 13% / 24% 把 bg / border 混到 `bg_page` 上。
 
+- **自检数字**：首屏 `.float-check` 进入视口时，数字从 0 滚到 1,302，进度条同步填满；
+  `prefers-reduced-motion` 下直接显示终值。
 - **图标**：页面图标全部为内联 Lucide 风格线性 SVG；品牌标使用 Lucide 的 `box`
   图标（ISC），颜色改为站点强调色。没有 emoji。
 - **动效**：滚动进场、截图交叉淡入、导航下划线、悬浮卡片漂浮；
@@ -80,10 +82,15 @@ preview/mobile.png         390px 首屏预览
 
 ## 维护提示
 
-- 版本号在 `index.html` 里有多处（首屏 pill、下载区、页脚、注释），升级版本时一起改。
+- 页面版本号由 `site.js` 的 `FALLBACK_VERSION` + GitHub API
+  `releases/latest` 自动同步；`index.html` 里的 `2.12.1` 是脚本加载前的兜底。
+  升级时至少同步 `FALLBACK_VERSION` 和 HTML 里的兜底值。
+- API 是匿名请求（约 60 次/小时/IP），同一标签页缓存 30 分钟；
+  断网、限流或访问不到 GitHub 时保留兜底版本，不影响下载链接。
 - 部署到正式域名后，建议把 `og:image` 换成绝对 URL（现在用的是相对路径），
   分享卡片才能稳定取到图。
 - 下载链接全部指向 `releases/latest`；更新日志指向 `CHANGELOG.md`；
   页脚 GPL-3.0 指向仓库的 `LICENSE`。
+- 页脚的「萌ICP备20230254号」是整活外链，指向 `icp.gov.moe`；不影响项目许可或部署。
 - 新增截图时保持 1280×820 或同比例（1.560:1），直接放进 `assets/img/` 并更新
   `index.html` 里的标签页 `data-*` 和 `screen-slide` 即可，计数会自动更新。

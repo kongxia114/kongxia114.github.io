@@ -584,6 +584,150 @@
   }
 
   /* ------------------------------------------------------------------------
+     Self-check count-up
+     ------------------------------------------------------------------------ */
+
+  const countCard = $(".float-check");
+  const countNumber = countCard ? $(".count-num", countCard) : null;
+  const countBar = countCard ? $(".mini-bar", countCard) : null;
+  const countTarget = countNumber ? parseInt(countNumber.dataset.count, 10) : NaN;
+
+  function formatCount(value) {
+    return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function finishCount() {
+    if (!countNumber) return;
+    countNumber.textContent = formatCount(countTarget);
+    if (countCard) countCard.classList.add("is-counted");
+  }
+
+  if (countCard && countNumber && Number.isFinite(countTarget)) {
+    if (reduceMotion.matches || !("IntersectionObserver" in window)) {
+      finishCount();
+    } else {
+      const countObserver = new IntersectionObserver(
+        (entries, observer) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer.disconnect();
+
+          // The hero visual fades in before the count starts; wait for it to be readable.
+          window.setTimeout(() => {
+            if (countBar) void countBar.offsetWidth;
+            countCard.classList.add("is-counted");
+
+            const duration = 1500;
+            const startedAt = performance.now();
+            countNumber.textContent = "0";
+
+            const tick = (now) => {
+              const progress = Math.min((now - startedAt) / duration, 1);
+              const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+              countNumber.textContent = formatCount(Math.floor(eased * countTarget));
+
+              if (progress < 1) {
+                window.requestAnimationFrame(tick);
+              } else {
+                countNumber.textContent = formatCount(countTarget);
+              }
+            };
+
+            window.requestAnimationFrame(tick);
+          }, 700);
+        },
+        { threshold: 0.35 }
+      );
+
+      countObserver.observe(countCard);
+    }
+  }
+  /* ------------------------------------------------------------------------
+     Latest GitHub release
+     ------------------------------------------------------------------------ */
+
+  const RELEASE_REPO = "kongxia114/Mosslight-Launcher-2";
+  const FALLBACK_VERSION = "2.12.1";
+  const VERSION_CACHE_KEY = "mosslight-latest-release";
+  const VERSION_CACHE_TTL = 30 * 60 * 1000;
+
+  function normalizeVersion(value) {
+    const match = String(value || "").trim().match(/(?:^|v)(\d+(?:\.\d+){1,3}(?:[-+][0-9a-z.-]+)?)$/i);
+    return match ? match[1] : null;
+  }
+
+  function renderVersion(shortVersion) {
+    if (!shortVersion) return;
+    const fullVersion = `v${shortVersion}`;
+
+    $$("[data-version-format]").forEach((node) => {
+      node.textContent = node.dataset.versionFormat === "short" ? shortVersion : fullVersion;
+    });
+
+    $$("[data-download-label]").forEach((node) => {
+      node.setAttribute("aria-label", `下载 Mosslight Launcher 2 ${fullVersion}`);
+    });
+
+    const schema = document.getElementById("app-schema");
+    if (schema) {
+      try {
+        const data = JSON.parse(schema.textContent);
+        data.softwareVersion = shortVersion;
+        schema.textContent = JSON.stringify(data);
+      } catch {
+        // Keep the static structured data if it cannot be parsed.
+      }
+    }
+  }
+
+  function readCachedVersion() {
+    try {
+      const cached = JSON.parse(window.sessionStorage.getItem(VERSION_CACHE_KEY) || "null");
+      if (!cached || typeof cached.version !== "string") return null;
+      if (Date.now() - Number(cached.at) > VERSION_CACHE_TTL) return null;
+      return normalizeVersion(cached.version);
+    } catch {
+      return null;
+    }
+  }
+
+  async function requestLatestVersion() {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 6000);
+
+    try {
+      const response = await fetch(`https://api.github.com/repos/${RELEASE_REPO}/releases/latest`, {
+        headers: { Accept: "application/vnd.github+json" },
+        signal: controller.signal,
+        cache: "no-store",
+      });
+
+      if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+      const release = await response.json();
+      const version = normalizeVersion(release.tag_name) || normalizeVersion(release.name);
+      if (!version) throw new Error("Release has no usable version");
+
+      try {
+        window.sessionStorage.setItem(VERSION_CACHE_KEY, JSON.stringify({ version, at: Date.now() }));
+      } catch {
+        // Storage can be disabled; still render the live value.
+      }
+
+      return version;
+    } finally {
+      window.clearTimeout(timer);
+    }
+  }
+
+  renderVersion(FALLBACK_VERSION);
+  const cachedVersion = readCachedVersion();
+  if (cachedVersion) {
+    renderVersion(cachedVersion);
+  } else {
+    requestLatestVersion().then(renderVersion).catch(() => {
+      // Keep the static fallback when offline, rate-limited, or CORS-blocked.
+    });
+  }
+  /* ------------------------------------------------------------------------
      Init
      ------------------------------------------------------------------------ */
 
