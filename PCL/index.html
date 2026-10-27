@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瓜皮龙工作室 · PCL 启动器</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <style>
+        /* ===== 全局重置 & 暗色基调 ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0a0e14;
+            /* 深色背景带一点微妙的径向渐变，让视觉聚焦于中心 */
+            background-image: radial-gradient(circle at 30% 10%, rgba(0, 100, 200, 0.08) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 90%, rgba(0, 140, 255, 0.05) 0%, transparent 60%);
+            color: #c9d1d9;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== 主内容区域 ===== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 1.5rem;
+            /* 轻微上移视觉重心 */
+            padding-top: 8vh;
+        }
+
+        /* 标题 + 图标区域（预留图片位置） */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ------------------------------------------------------------
+           图片占位说明（您可以直接替换为实际的图片元素）
+           例如：<img src="logo.png" alt="PCL logo" class="logo-img">
+           或作为背景装饰。
+           位置：标题上方，建议尺寸 80x80 左右。
+           下面留了一个占位 <div class="logo-placeholder"> 供您替换。
+        ------------------------------------------------------------ */
+        .logo-placeholder {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: linear-gradient(145deg, #1a2a3a, #0d1a24);
+            border: 1px solid #2a4055;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 150, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #3a6a8a;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            /* 实际使用时替换注释：可以放<img> 或 背景图 */
+            transition: box-shadow 0.3s ease;
+        }
+
+        .logo-placeholder:hover {
+            box-shadow: 0 8px 30px rgba(0, 150, 255, 0.25), 0 0 0 1px #0099ff;
+        }
+
+        /* 主标题 */
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 6px;
+            margin: 0;
+            text-shadow: 0 0 25px rgba(0, 130, 220, 0.5), 0 4px 12px rgba(0, 0, 0, 0.6);
+            line-height: 1.2;
+        }
+
+        /* 描述文字（俏皮风格保留，但更干净） */
+        .subtitle {
+            font-size: 1.15rem;
+            color: #9aa9b9;
+            margin-top: 12px;
+            margin-bottom: 2.5rem;
+            letter-spacing: 1px;
+            max-width: 600px;
+            padding: 0 0.5rem;
+            font-weight: 400;
+            border-left: 2px solid #1e5a7a;
+            border-right: 2px solid #1e5a7a;
+            padding: 0 1rem;
+            background: rgba(0, 40, 70, 0.2);
+            border-radius: 30px;
+            line-height: 1.8;
+        }
+
+        /* 下载按钮——更现代，带轻量光泽 */
+        .download-btn {
+            display: inline-block;
+            padding: 18px 62px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ffffff;
+            background: linear-gradient(145deg, #0066aa, #0088dd);
+            text-decoration: none;
+            border-radius: 40px;
+            border: 1px solid rgba(0, 180, 255, 0.7);
+            box-shadow: 0 8px 28px rgba(0, 120, 210, 0.4), 0 0 0 1px rgba(0, 180, 255, 0.2) inset;
+            transition: all 0.25s ease;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 按钮悬停更亮，轻微浮起 */
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 34px rgba(0, 140, 255, 0.7), 0 0 0 1px rgba(100, 200, 255, 0.5) inset;
+            background: linear-gradient(145deg, #0077cc, #0099ee);
+            border-color: #33bbff;
+        }
+
+        .download-btn:active {
+            transform: translateY(0px);
+            box-shadow: 0 4px 15px rgba(0, 110, 200, 0.6);
+        }
+
+        /* 可选：给按钮加个微妙的光泽伪元素（装饰） */
+        .download-btn::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .download-btn:hover::after {
+            left: 100%;
+        }
+
+        /* ===== 页脚 ===== */
+        footer {
+            background-color: #06090e;
+            border-top: 1px solid #1e2a36;
+            padding: 24px 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #7a8b9c;
+            backdrop-filter: blur(2px);
+        }
+
+        footer p {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 8px 6px;
+        }
+
+        footer a {
+            color: #8fa6b9;
+            text-decoration: none;
+            transition: color 0.2s ease, text-shadow 0.2s ease;
+            padding: 2px 2px;
+            border-bottom: 1px dotted transparent;
+        }
+
+        footer a:hover {
+            color: #3aa3ff;
+            text-shadow: 0 0 12px rgba(0, 150, 255, 0.5);
+            border-bottom-color: #3aa3ff;
+        }
+
+        footer span {
+            color: #2f4050;
+            margin: 0 6px;
+            user-select: none;
+        }
+
+        /* 针对分隔符的样式 */
+        footer .divider {
+            color: #2a3a4a;
+            font-weight: 300;
+            margin: 0 4px;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.6rem;
+                letter-spacing: 3px;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+                border-left: none;
+                border-right: none;
+                background: transparent;
+                padding: 0 0.5rem;
+            }
+
+            .download-btn {
+                padding: 16px 42px;
+                font-size: 1.2rem;
+            }
+
+            .logo-placeholder {
+                width: 60px;
+                height: 60px;
+                border-radius: 16px;
+                font-size: 1.6rem;
+            }
+
+            footer p {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            footer .divider {
+                display: none;
+            }
+        }
+
+        /* 自定义选择颜色 */
+        ::selection {
+            background: rgba(0, 150, 255, 0.35);
+            color: #ffffff;
+        }
+
+        /* 如果需要图片位置，比如右下角装饰，可以加个固定元素
+           但这里不再添加，以免干扰。您可以在hero区域内自由放置图片。
+        */
+    </style>
+</head>
+<body>
+
+    <div class="main-content">
+        <!-- 图标/图片区域（请替换为实际图片） -->
+        <div class="hero">
+            <!-- 
+                图片占位：您可以用下面任一方式替换。
+                方式一（推荐）：<img src="your-logo.png" alt="瓜皮龙 logo" style="width:72px;height:72px;border-radius:20px;object-fit:cover;">
+                方式二：保留此占位并加上背景图片 background-image: url('xxx');
+                方式三：直接删除此div，然后在上方或标题旁自行插入图片。
+            -->
+            <div class="logo-placeholder" aria-label="PCL 图标占位">
+                <!-- 占位内容：可替换为图片或文字/图标 -->
+                <span>PCL</span>
+            </div>
+
+            <h1>PCL 启动器</h1>
+        </div>
+
+        <p class="subtitle">
+            一个 MC 启动器，懒得写软件描述了，下载就完事了。对，这就是官网。
+        </p>
+
+        <!-- 下载按钮，链向原地址 -->
+        <a href="https://meloong.com/afd/p/0164034c016c11ebafcb52540025c377" 
+           class="download-btn" 
+           target="_blank" 
+           rel="noopener noreferrer">
+            下载
+        </a>
+    </div>
+
+    <footer>
+        <p>
+            联系方式：<a href="mailto:admin@meloong.com">admin@meloong.com</a>
+        </p>
+        <p>
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">蜀ICP备2024111431号</a>
+            <span class="divider">|</span>
+            <a href="https://beian.mps.gov.cn/#/query/webSearch" target="_blank" rel="noopener noreferrer">川公网安备51015602001165号</a>
+        </p>
+    </footer>
+
+</body>
+</html>
