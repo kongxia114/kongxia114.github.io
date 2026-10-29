@@ -47,9 +47,10 @@ scripts/build-posts.mjs    Issues → posts.json / feed.xml / 图片镜像（零
 .nojekyll                  关掉 Jekyll，按纯静态文件原样发布
 ```
 
-> 图片本地化：issue 里粘贴的图片（`github.com/user-attachments/...` 等）会在构建时
-> 下载到 `assets/media/`，正文里的链接自动改成本地路径。这样即使 GitHub 图床在
-> 某些网络下打不开，站点图片也能正常显示。下载失败时自动保留原链接，不会中断构建。
+> 图片本地化：正文里引用的图片（GitHub issue 附件、YouTube 封面等外链）会在构建时
+> 下载到 `assets/media/`，正文链接自动改写成本地路径。这样即使 GitHub 图床、YouTube
+> 在某些网络下打不开，站点图片也能正常显示。下载失败（或不是图片）时自动保留原链接，
+> 不会中断构建；`data/media.json` 记录映射，重复构建只下载新增图片。
 
 ## 本地预览
 

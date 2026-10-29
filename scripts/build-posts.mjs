@@ -110,9 +110,14 @@ function toPost(issue) {
 
 /* ---------------- 图片本地化 ---------------- */
 
-// 只镜像 GitHub 自己托管的图床；其它外链（如 b 站图床）保持原样
-const IMAGE_URL_RE =
-  /https?:\/\/(?:github\.com\/user-attachments\/assets\/|private-user-images\.githubusercontent\.com\/|user-images\.githubusercontent\.com\/|raw\.githubusercontent\.com\/)[^\s)"'<>\\]+/gi;
+// 提取正文里所有外链图片：Markdown 图片语法 + HTML <img>。
+// 全部镜像到本地，避免 GitHub 图床 / YouTube 封面之类的外链在部分网络下打不开。
+function extractImageUrls(body) {
+  const urls = new Set();
+  for (const m of body.matchAll(/!\[[^\]]*\]\(\s*([^)\s]+)(?:\s+["'][^"']*["'])?\s*\)/g)) urls.add(m[1]);
+  for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) urls.add(m[1]);
+  return [...urls].filter((u) => /^https?:\/\//i.test(u));
+}
 
 const EXT_BY_TYPE = {
   'image/png': 'png',
@@ -163,7 +168,7 @@ async function mirrorImages(posts, manifest) {
   const stats = { downloaded: 0, reused: 0, failed: 0, bytes: 0 };
 
   for (const post of posts) {
-    const urls = [...new Set(post.body.match(IMAGE_URL_RE) || [])];
+    const urls = extractImageUrls(post.body);
     for (const url of urls) {
       const known = manifest[url];
       if (known && existsSync(join(ROOT, known))) {
