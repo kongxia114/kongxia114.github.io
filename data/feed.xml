@@ -5,8 +5,15 @@
     <link>https://kongxia114.github.io/</link>
     <description>红石、Minecraft 模组、代码与折腾日常</description>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 29 Oct 2026 20:33:09 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2026 20:34:18 GMT</lastBuildDate>
     <atom:link href="https://kongxia114.github.io/data/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于Minecraft-Forbric-mod-loader对于本项目的个人观点</title>
+      <link>https://kongxia114.github.io/#/post/12</link>
+      <guid isPermaLink="false">issue-12@kongxia114</guid>
+      <pubDate>Thu, 29 Oct 2026 20:34:03 GMT</pubDate>
+      <description>本文原作者：GongSunFangYun 事先声明： - 本人仅对此项目提出建议和作出分析评价与批评，并详细探讨本项目的相关内容，同时依据个人对于各个游戏的Mod开发与ML开发的微薄见解进行下列评析 - 无脑攻击任何一个项目都是不合适的，应该依据某个项目&quot;做了什么&quot;和&quot;做不到什么&quot;与&apos;&quot;没做什么&quot;等去多维度评价项目，即便项目开发者的作为可能令人不适，项目的实现效果可能不尽人意，也请先论事再论人，这二者不是对等的关系，并且如果项目实在一言难尽，可以先品鉴完再开骂，无脑的直接开团放在任何场合任何情况下都是不合适的 - 若项目开发者或者其他的路人看到了这份issue，请不要使用AIGC内容去进行回复…</description>
+    </item>
     <item>
       <title>Minecraft-Forbric模组加载器-测评和反馈  #59</title>
       <link>https://kongxia114.github.io/#/post/11</link>
