@@ -269,8 +269,24 @@ async function main() {
   const mediaStats = await mirrorImages(posts, manifest);
 
   const now = new Date().toISOString();
+  const dataDir = resolve(ROOT, 'data');
+  const postsPath = resolve(dataDir, 'posts.json');
+  await mkdir(dataDir, { recursive: true });
+
+  // 内容没变化就沿用上次的时间戳，避免定时任务每天产生一个空提交
+  let generatedAt = now;
+  try {
+    const prev = JSON.parse(await readFile(postsPath, 'utf8'));
+    if (JSON.stringify(prev.issues) === JSON.stringify(posts) && prev.generated_at) {
+      generatedAt = prev.generated_at;
+      console.log('  内容无变化，沿用上次快照时间');
+    }
+  } catch {
+    /* 首次构建，忽略 */
+  }
+
   const snapshot = {
-    generated_at: now,
+    generated_at: generatedAt,
     repo: `${OWNER}/${REPO}`,
     source: `https://github.com/${OWNER}/${REPO}/issues`,
     site: SITE,
@@ -278,10 +294,8 @@ async function main() {
     issues: posts
   };
 
-  const dataDir = resolve(ROOT, 'data');
-  await mkdir(dataDir, { recursive: true });
-  await writeFile(resolve(dataDir, 'posts.json'), `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
-  await writeFile(resolve(dataDir, 'feed.xml'), feedXML(posts, now), 'utf8');
+  await writeFile(postsPath, `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
+  await writeFile(resolve(dataDir, 'feed.xml'), feedXML(posts, generatedAt), 'utf8');
   await writeFile(
     MANIFEST_PATH,
     `${JSON.stringify(Object.fromEntries(Object.entries(manifest).sort()), null, 2)}\n`,
