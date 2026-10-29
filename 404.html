@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 · 页面不存在 | 红石块工作室</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('rs-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    .notfound {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      text-align: center;
+      padding: 2rem 1.5rem;
+    }
+    .notfound .code {
+      font-size: clamp(4rem, 16vw, 8rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -.04em;
+      background: linear-gradient(120deg, var(--accent), #e79a6a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .notfound h1 { font-size: 1.35rem; }
+    .notfound p { color: var(--text-soft); max-width: 34rem; }
+    .notfound .actions { display: flex; gap: .7rem; flex-wrap: wrap; justify-content: center; margin-top: .6rem; }
+  </style>
+</head>
+<body>
+  <main class="notfound">
+    <div class="code">404</div>
+    <h1>这一块红石没接上</h1>
+    <p>你要找的页面不存在，可能是链接拼错了，或者那篇文章已经删除。</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="/">回到首页</a>
+      <a class="btn btn-ghost" href="https://github.com/kongxia114/kongxia114.github.io/issues" target="_blank" rel="noopener">在 Issues 里找找</a>
+    </div>
+  </main>
+</body>
+</html>

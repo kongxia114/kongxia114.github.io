@@ -1,0 +1,45 @@
+name: 同步 Issues 数据
+
+on:
+  schedule:
+    # 每天 UTC 21:17（北京时间 05:17）刷新一次，防止快照过期
+    - cron: '17 21 * * *'
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled, transferred]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-posts
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 生成 posts.json / feed.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/build-posts.mjs
+
+      - name: 提交变更
+        run: |
+          if [ -z "$(git status --porcelain data/)" ]; then
+            echo "数据无变化，跳过提交"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/posts.json data/feed.xml
+          git commit -m "chore: 同步 Issues 数据快照"
+          git push

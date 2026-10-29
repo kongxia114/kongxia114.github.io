@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>红石块工作室 · 技术博客</title>
+    <link>https://kongxia114.github.io/</link>
+    <description>红石、Minecraft 模组、代码与折腾日常</description>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 29 Oct 2026 20:17:28 GMT</lastBuildDate>
+    <atom:link href="https://kongxia114.github.io/data/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Minecraft-Forbric模组加载器-测评和反馈  #59</title>
+      <link>https://kongxia114.github.io/#/post/11</link>
+      <guid isPermaLink="false">issue-11@kongxia114</guid>
+      <pubDate>Thu, 29 Oct 2026 20:01:25 GMT</pubDate>
+      <description>本文章（更多上下文版）已发布到：https://cubk.cn/articles/evaluate-forbric 并以CC BY 4.0授权，以防作者削除本评论或仓库。 在我在哔哩哔哩看到这个雷霆东西之后秉承赤石精神对这个东西进行了体验，以下是笔者的一些使用体验。 首先进行一下省流： 这是一个正宗老狗屎，堪比我声称我统一了Windows、MacOS、Linux制造了一个叫做Winacunix的作业系统，然后这个作业系统有Windows的体积和响应速度、MacOS的软件生态和游戏性能、Linux的驱动支持。集成百家之短，去其精华，取其糟粕。 现在你不可能使用这个狗屎运行任何整合包或者高级mod…</description>
+    </item>
+    <item>
+      <title>更新---更新</title>
+      <link>https://kongxia114.github.io/#/post/10</link>
+      <guid isPermaLink="false">issue-10@kongxia114</guid>
+      <pubDate>Thu, 26 Feb 2026 02:51:44 GMT</pubDate>
+      <description>新年快乐啊 不知道写点啥</description>
+    </item>
+    <item>
+      <title>饿啊</title>
+      <link>https://kongxia114.github.io/#/post/9</link>
+      <guid isPermaLink="false">issue-9@kongxia114</guid>
+      <pubDate>Mon, 12 Jan 2026 07:34:38 GMT</pubDate>
+      <description>饿啊 ——饿啊 ——饿啊 ——饿啊 ——饿啊</description>
+    </item>
+    <item>
+      <title>不知道怎么更新内容了.........</title>
+      <link>https://kongxia114.github.io/#/post/8</link>
+      <guid isPermaLink="false">issue-8@kongxia114</guid>
+      <pubDate>Mon, 12 Jan 2026 07:33:21 GMT</pubDate>
+      <description>难受啊</description>
+    </item>
+    <item>
+      <title>胜败乃兵家常但是下一次我们会赢回来的</title>
+      <link>https://kongxia114.github.io/#/post/7</link>
+      <guid isPermaLink="false">issue-7@kongxia114</guid>
+      <pubDate>Fri, 21 Nov 2025 09:29:09 GMT</pubDate>
+      <description>胜败乃兵家常但是下一次我们会赢回来的</description>
+    </item>
+    <item>
+      <title>我是雷劈</title>
+      <link>https://kongxia114.github.io/#/post/6</link>
+      <guid isPermaLink="false">issue-6@kongxia114</guid>
+      <pubDate>Fri, 21 Nov 2025 09:28:39 GMT</pubDate>
+      <description>胜败乃兵家常但是下一次我们会赢回来的</description>
+    </item>
+    <item>
+      <title>测试</title>
+      <link>https://kongxia114.github.io/#/post/5</link>
+      <guid isPermaLink="false">issue-5@kongxia114</guid>
+      <pubDate>Fri, 21 Nov 2025 05:23:15 GMT</pubDate>
+      <description>测试</description>
+    </item>
+  </channel>
+</rss>
