@@ -35,15 +35,21 @@ assets/
   js/app.js                数据加载、路由、Markdown 渲染、主题、灯箱
   vendor/marked.min.js     Markdown 解析（本地内置，不走 CDN）
   vendor/purify.min.js     HTML 清洗，防 XSS
+  media/                   issue 图片镜像（构建时下载，不依赖 GitHub 图床）
   favicon.svg
 data/
   posts.json               Issues 数据快照（前端主要读取它，不受 API 限流影响）
   feed.xml                 RSS 订阅源
-scripts/build-posts.mjs    Issues → posts.json / feed.xml 生成脚本（零依赖）
+  media.json               原图 URL → assets/media 的映射
+scripts/build-posts.mjs    Issues → posts.json / feed.xml / 图片镜像（零依赖）
 .github/workflows/
   refresh-posts.yml        issue 变动 / 定时自动刷新数据
 .nojekyll                  关掉 Jekyll，按纯静态文件原样发布
 ```
+
+> 图片本地化：issue 里粘贴的图片（`github.com/user-attachments/...` 等）会在构建时
+> 下载到 `assets/media/`，正文里的链接自动改成本地路径。这样即使 GitHub 图床在
+> 某些网络下打不开，站点图片也能正常显示。下载失败时自动保留原链接，不会中断构建。
 
 ## 本地预览
 

@@ -5,6 +5,8 @@
  * 产出：
  *   data/posts.json  —— 前端读取的文章数据（不受 GitHub API 限流影响）
  *   data/feed.xml    —— RSS 订阅源
+ *   assets/media/*   —— issue 里上传的图片镜像（GitHub 图床在国内常被墙，本地化后更稳）
+ *   data/media.json  —— 原图 URL → 本地路径的映射，用于增量更新
  *
  * 用法：
  *   node scripts/build-posts.mjs
@@ -14,10 +16,14 @@
  */
 
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
-import { dirname, resolve } from 'node:path';
+import { existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const MEDIA_DIR = resolve(ROOT, 'assets/media');
+const MANIFEST_PATH = resolve(ROOT, 'data/media.json');
 
 const argv = Object.fromEntries(
   process.argv.slice(2)
@@ -102,6 +108,87 @@ function toPost(issue) {
   };
 }
 
+/* ---------------- 图片本地化 ---------------- */
+
+// 只镜像 GitHub 自己托管的图床；其它外链（如 b 站图床）保持原样
+const IMAGE_URL_RE =
+  /https?:\/\/(?:github\.com\/user-attachments\/assets\/|private-user-images\.githubusercontent\.com\/|user-images\.githubusercontent\.com\/|raw\.githubusercontent\.com\/)[^\s)"'<>\\]+/gi;
+
+const EXT_BY_TYPE = {
+  'image/png': 'png',
+  'image/jpeg': 'jpg',
+  'image/jpg': 'jpg',
+  'image/gif': 'gif',
+  'image/webp': 'webp',
+  'image/svg+xml': 'svg',
+  'image/avif': 'avif'
+};
+
+async function readManifest() {
+  try {
+    return JSON.parse(await readFile(MANIFEST_PATH, 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+async function downloadImage(url, base) {
+  let lastErr;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const res = await fetch(url, {
+        redirect: 'follow',
+        headers: { 'User-Agent': 'redstone-blog-builder', Accept: 'image/*' }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const type = (res.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
+      const ext = EXT_BY_TYPE[type];
+      if (!ext) throw new Error(`不是图片（${type || '未知类型'}）`);
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (!buf.length) throw new Error('空文件');
+      if (buf.length > 12 * 1024 * 1024) throw new Error(`太大（${(buf.length / 1024 / 1024).toFixed(1)}MB）`);
+      const name = `${base}.${ext}`;
+      await writeFile(join(MEDIA_DIR, name), buf);
+      return { name, bytes: buf.length };
+    } catch (err) {
+      lastErr = err;
+      if (attempt === 1) await new Promise((r) => setTimeout(r, 800));
+    }
+  }
+  throw lastErr;
+}
+
+async function mirrorImages(posts, manifest) {
+  await mkdir(MEDIA_DIR, { recursive: true });
+  const stats = { downloaded: 0, reused: 0, failed: 0, bytes: 0 };
+
+  for (const post of posts) {
+    const urls = [...new Set(post.body.match(IMAGE_URL_RE) || [])];
+    for (const url of urls) {
+      const known = manifest[url];
+      if (known && existsSync(join(ROOT, known))) {
+        post.body = post.body.split(url).join(known);
+        stats.reused++;
+        continue;
+      }
+      const base = createHash('sha1').update(url).digest('hex').slice(0, 12);
+      try {
+        const { name, bytes } = await downloadImage(url, base);
+        const local = `/assets/media/${name}`;
+        manifest[url] = local;
+        post.body = post.body.split(url).join(local);
+        stats.downloaded++;
+        stats.bytes += bytes;
+        console.log(`  ↓ 图片 ${name} (${(bytes / 1024).toFixed(0)} KB)`);
+      } catch (err) {
+        stats.failed++;
+        console.warn(`  ! 镜像失败，保留原链接：${url.slice(0, 72)} — ${err.message}`);
+      }
+    }
+  }
+  return stats;
+}
+
 /* ---------------- RSS ---------------- */
 
 function xmlEscape(text) {
@@ -172,6 +259,10 @@ async function main() {
   const posts = raw.filter(isPublishable).map(toPost);
   posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
+  // 把 issue 里上传的图片下载到 assets/media，站点不再依赖 GitHub 图床
+  const manifest = await readManifest();
+  const mediaStats = await mirrorImages(posts, manifest);
+
   const now = new Date().toISOString();
   const snapshot = {
     generated_at: now,
@@ -186,10 +277,19 @@ async function main() {
   await mkdir(dataDir, { recursive: true });
   await writeFile(resolve(dataDir, 'posts.json'), `${JSON.stringify(snapshot, null, 2)}\n`, 'utf8');
   await writeFile(resolve(dataDir, 'feed.xml'), feedXML(posts, now), 'utf8');
+  await writeFile(
+    MANIFEST_PATH,
+    `${JSON.stringify(Object.fromEntries(Object.entries(manifest).sort()), null, 2)}\n`,
+    'utf8'
+  );
 
   console.log(`✓ 共 ${raw.length} 条 issue，发布 ${posts.length} 篇`);
   console.log(`  data/posts.json  (${(JSON.stringify(snapshot).length / 1024).toFixed(1)} KB)`);
   console.log(`  data/feed.xml    (${posts.length} 条)`);
+  console.log(
+    `  图片：新下载 ${mediaStats.downloaded}、复用 ${mediaStats.reused}、失败 ${mediaStats.failed}` +
+      (mediaStats.bytes ? `（${(mediaStats.bytes / 1024 / 1024).toFixed(2)} MB）` : '')
+  );
 }
 
 main().catch((err) => {
