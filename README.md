@@ -25,6 +25,15 @@
 关闭的文章仍会保留在网站上，只是卡片上会标一个「已关闭」标记，不会被隐藏。
 如果完全不想展示，给它加 `hidden` label。
 
+## 评论
+
+文章页的评论区就是 issue 的评论：构建时通过 API 拉取，作者、头像、时间、Markdown
+正文都会一起同步，头像也会下载到 `assets/media/`。评论本身仍在 GitHub 上管理——
+站点是纯静态的，没有后端，所以「发评论」会跳到对应 issue。
+
+新评论、修改评论、删除评论都会触发 `.github/workflows/refresh-posts.yml`
+（`issue_comment` 事件），一两分钟后站点自动更新。
+
 ## 结构
 
 ```
@@ -38,12 +47,12 @@ assets/
   media/                   issue 图片镜像（构建时下载，不依赖 GitHub 图床）
   favicon.svg
 data/
-  posts.json               Issues 数据快照（前端主要读取它，不受 API 限流影响）
+  posts.json               Issues 数据快照（含评论，前端主要读取它，不受 API 限流影响）
   feed.xml                 RSS 订阅源
   media.json               原图 URL → assets/media 的映射
-scripts/build-posts.mjs    Issues → posts.json / feed.xml / 图片镜像（零依赖）
+scripts/build-posts.mjs    Issues + 评论 → posts.json / feed.xml / 图片头像镜像（零依赖）
 .github/workflows/
-  refresh-posts.yml        issue 变动 / 定时自动刷新数据
+  refresh-posts.yml        issue / 评论变动、每天定时自动刷新数据
 .nojekyll                  关掉 Jekyll，按纯静态文件原样发布
 ```
 
@@ -91,16 +100,16 @@ GITHUB_TOKEN=ghp_xxx node scripts/build-posts.mjs
 ## 数据流
 
 ```
-GitHub Issues
-   │  gh 事件 / 每天定时
+GitHub Issues（正文 + 评论）
+   │  issues / issue_comment 事件、每天定时
    ▼
 Actions: node scripts/build-posts.mjs
-   │  提交 data/posts.json + data/feed.xml
+   │  提交 data/posts.json + data/feed.xml + assets/media
    ▼
 GitHub Pages（静态托管）
    │
    ▼
-浏览器：读 data/posts.json → 渲染列表 / 文章
+浏览器：读 data/posts.json → 渲染列表 / 文章 / 评论
         （快照读取失败时，退回到直接请求 GitHub API）
 ```
 

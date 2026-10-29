@@ -7,6 +7,8 @@ on:
   workflow_dispatch:
   issues:
     types: [opened, edited, deleted, closed, reopened, labeled, unlabeled, transferred]
+  issue_comment:
+    types: [created, edited, deleted]
 
 permissions:
   contents: write

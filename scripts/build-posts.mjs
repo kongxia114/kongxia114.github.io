@@ -163,35 +163,88 @@ async function downloadImage(url, base) {
   throw lastErr;
 }
 
+const mediaStats = { downloaded: 0, reused: 0, failed: 0, bytes: 0 };
+
+async function mirrorUrl(url, manifest) {
+  const known = manifest[url];
+  if (known && existsSync(join(ROOT, known))) {
+    mediaStats.reused++;
+    return known;
+  }
+  const base = createHash('sha1').update(url).digest('hex').slice(0, 12);
+  try {
+    const { name, bytes } = await downloadImage(url, base);
+    const local = `/assets/media/${name}`;
+    manifest[url] = local;
+    mediaStats.downloaded++;
+    mediaStats.bytes += bytes;
+    console.log(`  ↓ 图片 ${name} (${(bytes / 1024).toFixed(0)} KB)`);
+    return local;
+  } catch (err) {
+    mediaStats.failed++;
+    console.warn(`  ! 镜像失败，保留原链接：${url.slice(0, 72)} — ${err.message}`);
+    return url;
+  }
+}
+
+async function mirrorBody(body, manifest) {
+  let out = body;
+  for (const url of extractImageUrls(body)) {
+    const local = await mirrorUrl(url, manifest);
+    if (local !== url) out = out.split(url).join(local);
+  }
+  return out;
+}
+
 async function mirrorImages(posts, manifest) {
   await mkdir(MEDIA_DIR, { recursive: true });
-  const stats = { downloaded: 0, reused: 0, failed: 0, bytes: 0 };
+  for (const post of posts) post.body = await mirrorBody(post.body, manifest);
+}
 
-  for (const post of posts) {
-    const urls = extractImageUrls(post.body);
-    for (const url of urls) {
-      const known = manifest[url];
-      if (known && existsSync(join(ROOT, known))) {
-        post.body = post.body.split(url).join(known);
-        stats.reused++;
-        continue;
+/* ---------------- 评论 ---------------- */
+
+async function fetchComments(number) {
+  const all = [];
+  for (let page = 1; page <= 10; page++) {
+    const res = await gh(`${API}/${number}/comments?per_page=100&page=${page}`);
+    const batch = await res.json();
+    if (!Array.isArray(batch)) throw new Error('评论接口返回格式异常');
+    all.push(...batch);
+    if (batch.length < 100) break;
+  }
+  return all;
+}
+
+async function attachComments(posts, manifest) {
+  await mkdir(MEDIA_DIR, { recursive: true });
+  const targets = posts.filter((p) => p.comments > 0);
+  let total = 0;
+
+  for (const post of targets) {
+    try {
+      const raw = await fetchComments(post.number);
+      const list = [];
+      for (const c of raw) {
+        const body = await mirrorBody(c.body || '', manifest);
+        const avatar = c.user && c.user.avatar_url ? await mirrorUrl(c.user.avatar_url, manifest) : '';
+        list.push({
+          id: c.id,
+          author: c.user ? c.user.login : 'ghost',
+          author_url: c.user ? c.user.html_url : '',
+          avatar,
+          created_at: c.created_at,
+          url: c.html_url,
+          body
+        });
       }
-      const base = createHash('sha1').update(url).digest('hex').slice(0, 12);
-      try {
-        const { name, bytes } = await downloadImage(url, base);
-        const local = `/assets/media/${name}`;
-        manifest[url] = local;
-        post.body = post.body.split(url).join(local);
-        stats.downloaded++;
-        stats.bytes += bytes;
-        console.log(`  ↓ 图片 ${name} (${(bytes / 1024).toFixed(0)} KB)`);
-      } catch (err) {
-        stats.failed++;
-        console.warn(`  ! 镜像失败，保留原链接：${url.slice(0, 72)} — ${err.message}`);
-      }
+      post.comments_list = list;
+      total += list.length;
+    } catch (err) {
+      console.warn(`  ! #${post.number} 评论拉取失败：${err.message}`);
     }
   }
-  return stats;
+
+  if (targets.length) console.log(`  评论：${total} 条（来自 ${targets.length} 个 issue）`);
 }
 
 /* ---------------- RSS ---------------- */
@@ -264,9 +317,10 @@ async function main() {
   const posts = raw.filter(isPublishable).map(toPost);
   posts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-  // 把 issue 里上传的图片下载到 assets/media，站点不再依赖 GitHub 图床
+  // 把 issue 正文和评论里的外链图片、作者头像都下载到 assets/media
   const manifest = await readManifest();
-  const mediaStats = await mirrorImages(posts, manifest);
+  await mirrorImages(posts, manifest);
+  await attachComments(posts, manifest);
 
   const now = new Date().toISOString();
   const dataDir = resolve(ROOT, 'data');
@@ -306,7 +360,7 @@ async function main() {
   console.log(`  data/posts.json  (${(JSON.stringify(snapshot).length / 1024).toFixed(1)} KB)`);
   console.log(`  data/feed.xml    (${posts.length} 条)`);
   console.log(
-    `  图片：新下载 ${mediaStats.downloaded}、复用 ${mediaStats.reused}、失败 ${mediaStats.failed}` +
+    `  图片/头像：新下载 ${mediaStats.downloaded}、复用 ${mediaStats.reused}、失败 ${mediaStats.failed}` +
       (mediaStats.bytes ? `（${(mediaStats.bytes / 1024 / 1024).toFixed(2)} MB）` : '')
   );
 }

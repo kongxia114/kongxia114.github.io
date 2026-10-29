@@ -137,6 +137,11 @@
     postToc: $('#postToc'),
     tocList: $('#tocList'),
     postNav: $('#postNav'),
+    postComments: $('#postComments'),
+    commentList: $('#commentList'),
+    commentCount: $('#commentCount'),
+    commentsNote: $('#commentsNote'),
+    commentsLink: $('#commentsLink'),
     issueLink: $('#issueLink'),
     copyLink: $('#copyLinkBtn'),
     readingBar: $('#readingBar'),
@@ -162,6 +167,15 @@
       createdAt: raw.created_at || raw.createdAt || '',
       updatedAt: raw.updated_at || raw.updatedAt || '',
       comments: raw.comments || 0,
+      commentsList: (raw.comments_list || raw.commentList || []).map((c) => ({
+        id: c.id,
+        author: c.author || (c.user && c.user.login) || 'ghost',
+        authorUrl: c.author_url || (c.user && c.user.html_url) || '',
+        avatar: c.avatar || (c.user && c.user.avatar_url) || '',
+        createdAt: c.created_at || c.createdAt || '',
+        body: c.body || '',
+        url: c.url || c.html_url || ''
+      })),
       labels,
       url: raw.html_url || raw.url || `https://github.com/${CONFIG.owner}/${CONFIG.repo}/issues/${raw.number}`,
       isPull: Boolean(raw.pull_request)
@@ -345,7 +359,8 @@
     return html;
   }
 
-  function decorateContent(container) {
+  // 链接新窗口打开 + 图片懒加载（正文和评论共用）
+  function decorateComment(container) {
     container.querySelectorAll('a[href]').forEach((a) => {
       const href = a.getAttribute('href') || '';
       if (isHttp(href) && !href.startsWith(location.origin)) {
@@ -353,7 +368,15 @@
         a.rel = 'noopener noreferrer nofollow';
       }
     });
+    container.querySelectorAll('img').forEach((img) => {
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.referrerPolicy = 'no-referrer';
+      if (!img.alt) img.alt = '';
+    });
+  }
 
+  function decorateContent(container) {
     const used = new Set();
     const headings = [];
     container.querySelectorAll('h1, h2, h3, h4').forEach((h) => {
@@ -371,12 +394,7 @@
       if (h.tagName === 'H2' || h.tagName === 'H3') headings.push({ id, text: h.textContent, level: h.tagName === 'H3' ? 3 : 2 });
     });
 
-    container.querySelectorAll('img').forEach((img) => {
-      img.loading = 'lazy';
-      img.decoding = 'async';
-      img.referrerPolicy = 'no-referrer';
-      if (!img.alt) img.alt = '';
-    });
+    decorateComment(container);
 
     return headings;
   }
@@ -406,6 +424,49 @@
     return items.join('');
   }
 
+  function renderComments(post) {
+    if (!els.postComments) return;
+
+    const list = post.commentsList || [];
+    const count = list.length || post.comments || 0;
+
+    if (els.commentCount) {
+      els.commentCount.textContent = String(count);
+      els.commentCount.hidden = count === 0;
+    }
+
+    els.commentList.innerHTML = list.map((c) => {
+      const avatar = c.avatar
+        ? `<img class="comment-avatar" src="${escapeHtml(c.avatar)}" alt="" width="28" height="28" loading="lazy" decoding="async" referrerpolicy="no-referrer">`
+        : '<span class="comment-avatar comment-avatar-fallback" aria-hidden="true"></span>';
+      const author = c.authorUrl
+        ? `<a class="comment-author" href="${escapeHtml(c.authorUrl)}" target="_blank" rel="noopener">${escapeHtml(c.author)}</a>`
+        : `<span class="comment-author">${escapeHtml(c.author || '匿名')}</span>`;
+      const permalink = c.url
+        ? `<a class="comment-permalink" href="${escapeHtml(c.url)}" target="_blank" rel="noopener" title="在 GitHub 上查看这条评论">#</a>`
+        : '';
+      return `<li class="comment">
+        <div class="comment-head">${avatar}${author}<time class="comment-time">${escapeHtml(formatDate(c.createdAt, true))}</time>${permalink}</div>
+        <div class="comment-body markdown-body">${renderMarkdown(c.body)}</div>
+      </li>`;
+    }).join('');
+
+    els.commentList.querySelectorAll('.comment-body').forEach(decorateComment);
+
+    if (els.commentsNote) {
+      const empty = list.length === 0;
+      els.commentsNote.hidden = !empty;
+      if (empty) {
+        els.commentsNote.innerHTML = count > 0
+          ? `这篇有 ${count} 条评论，快照还没同步下来，可以先 <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener">去 issue 里看</a>。`
+          : `还没有评论，去 <a href="${escapeHtml(post.url)}" target="_blank" rel="noopener">issue 里抢个沙发</a>。`;
+      }
+    }
+
+    if (els.commentsLink) els.commentsLink.href = post.url;
+    els.postComments.hidden = false;
+  }
+
   function renderPost(post) {
     state.current = post;
 
@@ -422,6 +483,7 @@
     els.postContent.innerHTML = renderMarkdown(post.body);
     const headings = decorateContent(els.postContent);
     renderToc(headings);
+    renderComments(post);
 
     if (els.issueLink) els.issueLink.href = post.url;
 
@@ -646,8 +708,9 @@
       });
     }
 
-    // 正文图片点击放大（事件委托）
-    if (els.postContent) {      els.postContent.addEventListener('click', (e) => {
+    // 正文 / 评论图片点击放大（事件委托）
+    if (els.postView) {
+      els.postView.addEventListener('click', (e) => {
         const img = e.target.closest('img');
         if (img && img.src) openLightbox(img.src, img.alt);
       });
