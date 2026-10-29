@@ -111,11 +111,13 @@ img { max-width: 100%; height: auto; }
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* 只控制左右内边距，避免简写覆盖 main / toolbar 的上下留白 */
 .wrap {
   width: 100%;
   max-width: var(--wrap);
   margin: 0 auto;
-  padding: 0 24px;
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 .skip-link {
@@ -331,7 +333,7 @@ a:hover { text-decoration: underline; }
 }
 
 /* ---------- 主区域 ---------- */
-main { flex: 1; padding: 2.2rem 0 3rem; }
+main { flex: 1; padding: 2.2rem 0 4rem; }
 
 /* 头图 / 简介 */
 .hero {
@@ -928,7 +930,7 @@ main { flex: 1; padding: 2.2rem 0 3rem; }
 }
 
 @media (max-width: 560px) {
-  .wrap { padding: 0 16px; }
+  .wrap { padding-left: 16px; padding-right: 16px; }
   .brand-sub { display: none; }
   .brand-name { font-size: .95rem; }
   .header-actions .btn-ghost span { display: none; }
