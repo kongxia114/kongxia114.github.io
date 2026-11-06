@@ -1880,19 +1880,6 @@ main,
   pointer-events: none;
 }
 
-.download-panel::after {
-  content: "1.4";
-  position: absolute;
-  right: 20px;
-  bottom: -54px;
-  color: rgba(255, 255, 255, 0.022);
-  font-family: var(--display);
-  font-size: 230px;
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.08em;
-  pointer-events: none;
-}
 
 .download-main,
 .requirements {
