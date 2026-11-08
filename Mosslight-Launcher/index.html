@@ -29,7 +29,7 @@
     "description": "用 C# / WPF 写的 Minecraft 启动器，装原版、加载器、整合包，浏览 Modrinth 资源，管理账户和外观。",
     "applicationCategory": "GameApplication",
     "operatingSystem": "Windows 10 1809+, Windows 11",
-    "softwareVersion": "2.12.1",
+    "softwareVersion": "2.12.8",
     "codeRepository": "https://github.com/kongxia114/Mosslight-Launcher-2",
     "downloadUrl": "https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest",
     "license": "https://www.gnu.org/licenses/gpl-3.0.html",
@@ -87,12 +87,12 @@
             <path d="M9 18c-4.51 2-5-2-7-2"/>
           </svg>
         </a>
-        <a class="btn btn-primary btn-small header-download" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" aria-label="下载 Mosslight Launcher 2 v2.12.1" data-download-label>
+        <a class="btn btn-primary btn-small header-download" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" aria-label="下载 Mosslight Launcher 2 v2.12.8" data-download-label>
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/>
           </svg>
           <span>下载</span>
-          <span class="btn-version js-version" data-version-format="short">2.12.1</span>
+          <span class="btn-version js-version" data-version-format="short">2.12.8</span>
         </a>
         <button class="icon-btn menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav" aria-label="打开菜单" data-menu-toggle>
           <svg class="icon icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" focusable="false">
@@ -122,7 +122,7 @@
         下载 Windows 版
       </a>
       <div class="mobile-nav-meta">
-        <span class="js-version" data-version-format="full">v2.12.1</span>
+        <span class="js-version" data-version-format="full">v2.12.8</span>
         <span>Windows x64</span>
         <a href="https://github.com/kongxia114/Mosslight-Launcher-2" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
@@ -134,7 +134,7 @@
       <div class="container hero-grid">
         <div class="hero-copy">
           <div class="hero-badges reveal" style="--delay: 40ms">
-            <span class="release-pill"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.1</span> · 已发布</span>
+            <span class="release-pill"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.8</span> · 已发布</span>
             <span class="tech-pill">C# / WPF</span>
             <span class="tech-pill">GPL-3.0</span>
           </div>
@@ -145,7 +145,7 @@
           </h1>
 
           <p class="hero-lede reveal" style="--delay: 160ms">
-            后来顺手开源了。装原版、装<span class="nowrap">加载器</span>、装<span class="nowrap">整合包</span>、找<span class="nowrap">Modrinth 资源</span>、登<span class="nowrap">账号</span>，都在一个窗口里。
+            一开始只是自己用，后来顺手开源了。装原版、装<span class="nowrap">加载器</span>、装<span class="nowrap">整合包</span>、找<span class="nowrap">Modrinth 资源</span>、登<span class="nowrap">账号</span>，都在一个窗口里。
           </p>
 
           <div class="hero-actions reveal" style="--delay: 220ms">
@@ -231,9 +231,9 @@
         <div class="section-head">
           <div>
             <p class="eyebrow reveal">01 / 写在前面</p>
-            <h2 class="reveal" id="why-title" style="--delay: 60ms">只做<span class="text-gradient">日常会用</span>的功能</h2>
+            <h2 class="reveal" id="why-title" style="--delay: 60ms">只做<span class="text-gradient">日常会用到</span>的功能</h2>
           </div>
-          <p class="section-note reveal" style="--delay: 120ms">功能都按日常操作来：下载、安装、账户、外观。没做论坛、商城和插件市场。</p>
+          <p class="section-note reveal" style="--delay: 120ms">功能都围绕日常操作：下载、安装、账户、外观。没做论坛、商城和插件市场。</p>
         </div>
 
         <div class="why-grid">
@@ -275,7 +275,7 @@
               <span class="why-index">03 / INTERFACE</span>
             </div>
             <h3>界面和设置</h3>
-            <p>主题、强调色、背景、动效、语言。改完立刻生效；配置跟着启动器目录走，换电脑可以整个拷走。</p>
+            <p>主题、强调色、背景、动效、语言。改完立刻生效；配置放在启动器目录里，换电脑整个拷走就行。</p>
             <div class="why-metric">
               <span class="metric">5 种语言</span>
               <span class="metric-label">简中 · 繁中 · EN · 日 · RU</span>
@@ -316,7 +316,7 @@
               <span class="feature-index">02</span>
             </div>
             <h3>下载原版</h3>
-            <p>版本清单走 BMCLAPI 镜像；多线程、失败重试，镜像连续出问题就切官方源。已经下好的文件认 SHA-1 跳过。</p>
+            <p>版本清单从 BMCLAPI 镜像获取，多线程下载、失败重试；镜像连续出问题就切官方源。已经下好的文件会校验 SHA-1，跳过重复下载。</p>
             <div class="feature-tags"><span>BMCLAPI</span><span>SHA-1 校验</span></div>
           </article>
 
@@ -328,7 +328,7 @@
               <span class="feature-index">03</span>
             </div>
             <h3>一键装加载器</h3>
-            <p>Forge、NeoForge、Fabric、Quilt、OptiFine、LiteLoader 都能装。Forge 那几家要跑官方安装器，启动器会先把需要的库下好。</p>
+            <p>Forge、NeoForge、Fabric、Quilt、OptiFine、LiteLoader 都能装。Forge、NeoForge 这些要跑官方安装器，启动器会先把需要的库下好。</p>
             <div class="feature-tags"><span>6 种加载器</span><span>官方安装器</span></div>
           </article>
 
@@ -364,7 +364,7 @@
               <span class="feature-index">06</span>
             </div>
             <h3>账户</h3>
-            <p>离线档案、LittleSkin 网页授权或账号密码、自建 Yggdrasil。一个账号多个角色可以随时切，皮肤头像会自动拉。</p>
+            <p>离线档案、LittleSkin 网页授权或账号密码、自建 Yggdrasil。一个账号下的多个角色可以随时切换，皮肤头像会自动拉。</p>
             <div class="feature-tags"><span>LittleSkin</span><span>Yggdrasil</span></div>
           </article>
 
@@ -409,9 +409,9 @@
           <div class="screens-toolbar">
             <div class="screen-tabs" role="tablist" aria-label="界面截图">
               <button class="screen-tab is-active" type="button" role="tab" id="tab-mods" aria-selected="true" aria-controls="screen-panel" tabindex="0" data-screen="mods" data-title="社区资源" data-desc="模组、整合包、数据包、资源包和光影包都在这里，来源是 Modrinth。可以按游戏版本、加载器、类型筛选。">社区资源</button>
-              <button class="screen-tab" type="button" role="tab" id="tab-modpack" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="modpack" data-title="整合包" data-desc="支持 .mrpack 和 zip。拖进窗口后会依次装原版、装加载器，最后整理成一个版本文件夹。">整合包</button>
+              <button class="screen-tab" type="button" role="tab" id="tab-modpack" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="modpack" data-title="整合包" data-desc="支持 .mrpack 和 zip。拖进窗口后，它会先装原版和加载器，最后整理成一个版本文件夹。">整合包</button>
               <button class="screen-tab" type="button" role="tab" id="tab-shaders" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="shaders" data-title="光影包" data-desc="光影包可以按游戏版本筛选，详情里有支持的版本、下载量和关注数。">光影包</button>
-              <button class="screen-tab" type="button" role="tab" id="tab-accounts" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="accounts" data-title="账户" data-desc="离线档案、LittleSkin 和自建 Yggdrasil 都在这一页。多角色切换、刷新头像不用离开窗口。">账户</button>
+              <button class="screen-tab" type="button" role="tab" id="tab-accounts" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="accounts" data-title="账户" data-desc="离线档案、LittleSkin 和自建 Yggdrasil 都在这一页。切换角色、更新皮肤都不用离开窗口。">账户</button>
               <button class="screen-tab" type="button" role="tab" id="tab-personalize" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="personalize" data-title="个性化" data-desc="主题、强调色、背景、动效和界面语言，改完立刻生效，不需要重启。">个性化</button>
               <button class="screen-tab" type="button" role="tab" id="tab-settings" aria-selected="false" aria-controls="screen-panel" tabindex="-1" data-screen="settings" data-title="设置" data-desc="Java、内存、下载源和日志。物理内存、游戏可用内存和 JVM 开销写在同一行。">设置</button>
             </div>
@@ -474,8 +474,8 @@
         <div class="download-panel reveal">
           <div class="download-main">
             <p class="eyebrow">04 / 下载</p>
-            <h2 id="download-title">一个 zip，<br><span class="text-gradient">一个 exe</span></h2>
-            <p class="download-lede">下载、解压、双击。更新时只换掉一个 exe，不用重新安装。</p>
+            <h2 id="download-title">下载<br><span class="text-gradient">安装</span></h2>
+            <p class="download-lede">下载、解压、双击就能用。以后更新时覆盖 Mosslight.exe 就行，不用重新安装。</p>
 
             <div class="download-actions">
               <a class="btn btn-primary btn-xl" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer">
@@ -490,7 +490,7 @@
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
               </a>
             </div>
-            <p class="download-hint">将打开 GitHub Releases · 当前版本 <span class="js-version" data-version-format="full">v2.12.1</span></p>
+            <p class="download-hint">会跳转到 GitHub Releases · 当前版本 <span class="js-version" data-version-format="full">v2.12.8</span></p>
 
             <div class="download-meta">
               <span><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>Windows 10 1809+ / x64</span>
@@ -501,7 +501,7 @@
               <li>
                 <span class="step-index">01</span>
                 <strong>下载 win64.zip</strong>
-                <span>从 GitHub Releases 拿最新版。</span>
+                <span>从 GitHub Releases 下载最新版。</span>
               </li>
               <li>
                 <span class="step-index">02</span>
@@ -511,7 +511,7 @@
               <li>
                 <span class="step-index">03</span>
                 <strong>双击 Mosslight.exe</strong>
-                <span>第一次启动会扫一遍 Java，稍等几秒。</span>
+                <span>第一次启动会扫描 Java，稍等几秒。</span>
               </li>
             </ol>
           </div>
@@ -531,7 +531,7 @@
             </a>
             <p class="req-warning">
               <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
-              不是 SDK，也不是 ASP.NET Core Runtime。装一次就行。
+              不是 SDK，也不是 ASP.NET Core Runtime，装一次桌面运行时就行。
             </p>
             <ul class="check-list">
               <li><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6 9 17l-5-5"/></svg>Windows 10 1809 及以上</li>
@@ -633,8 +633,8 @@
               <span class="brand-sub">LAUNCHER <b>2</b></span>
             </span>
           </a>
-          <p>一个自己用的 Minecraft 启动器，后来顺手开源了。装原版、加载器、整合包、资源和账户，都在一个窗口里。</p>
-          <p class="footer-version"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.1</span> · Windows x64 · GPL-3.0</p>
+          <p>一个自己用的 Minecraft 启动器，后来顺手开源了。</p>
+          <p class="footer-version"><span class="live-dot" aria-hidden="true"></span><span class="js-version" data-version-format="full">v2.12.8</span> · Windows x64 · GPL-3.0</p>
         </div>
 
         <div class="footer-links">
@@ -681,7 +681,7 @@
 
   <div class="mobile-cta" data-mobile-cta aria-hidden="true">
     <div class="mobile-cta-copy">
-      <span class="js-version" data-version-format="full">v2.12.1</span>
+      <span class="js-version" data-version-format="full">v2.12.8</span>
       <strong>Win10 1809+ / x64</strong>
     </div>
     <a class="btn btn-primary btn-small" href="https://github.com/kongxia114/Mosslight-Launcher-2/releases/latest" target="_blank" rel="noopener noreferrer" tabindex="-1">

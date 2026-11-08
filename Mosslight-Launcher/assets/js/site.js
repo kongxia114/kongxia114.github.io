@@ -588,7 +588,7 @@
      ------------------------------------------------------------------------ */
 
   const RELEASE_REPO = "kongxia114/Mosslight-Launcher-2";
-  const FALLBACK_VERSION = "2.12.1";
+  const FALLBACK_VERSION = "2.12.8";
   const VERSION_CACHE_KEY = "mosslight-latest-release";
   const VERSION_CACHE_TTL = 30 * 60 * 1000;
 
